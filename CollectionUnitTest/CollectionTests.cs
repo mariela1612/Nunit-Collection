@@ -137,5 +137,15 @@ namespace CollectionUnitTest
 
             Assert.That(coll.ToString(), Is.EqualTo("[]"));
         }
+        [Test]
+        public void Test_AdRangeWithGrow()
+        {
+            var coll = new Collection<int>(1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+            coll.AddRange(new[] { 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 });
+
+            Assert.That(coll.Capacity, Is.EqualTo(36));
+            //Assert.That(coll.ToString(), Is.EqualTo("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]"));
+        }
     }
 }
