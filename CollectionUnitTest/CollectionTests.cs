@@ -53,25 +53,38 @@ namespace CollectionUnitTest
         public void Test_Collection_String()
         {
          
-            var nums = new Collection<string>("QA", "Dev", "DevOPS");
+            var coll = new Collection<string>("QA", "Dev", "DevOPS");
 
-            Assert.That(nums.Count == 3, "Count property");
-            Assert.AreEqual(nums.Capacity, 16, "Capacity property");
+            Assert.That(coll.Count == 3, "Count property");
+            Assert.AreEqual(coll.Capacity, 16, "Capacity property");
 
-            Assert.That(nums.ToString() == "[QA, Dev, DevOPS]");
+            Assert.That(coll.ToString() == "[QA, Dev, DevOPS]");
 
         }
         [Test]
-        public void Test_Collection_Remove()
+        public void Test_Collection_RemoveAtStart()
         {
         
-            var nums = new Collection<string>("QA", "Dev", "DevOPS");
-            Assert.That(nums.Count == 3, "Count property");
+            var coll = new Collection<string>("QA", "Dev", "DevOPS");
+            Assert.That(coll.Count == 3, "Count property");
 
-            nums.RemoveAt(0);
+            coll.RemoveAt(0);
 
-            Assert.That(nums.Count == 2, "Count property");
-            Assert.That(nums.ToString() == "[Dev, DevOPS]");
+            Assert.That(coll.Count == 2, "Count property");
+            Assert.That(coll.ToString() == "[Dev, DevOPS]");
+        }
+
+        [Test]
+        public void Test_Collection_RemoveAtEnd()
+        {
+
+            var coll = new Collection<string>("QA", "Dev", "DevOPS");
+            Assert.That(coll.Count == 3, "Count property");
+
+            coll.RemoveAt(2);
+
+            Assert.That(coll.Count == 2, "Count property");
+            Assert.That(coll.ToString() == "[QA, Dev]");
         }
 
         [Test]
@@ -106,6 +119,14 @@ namespace CollectionUnitTest
 
             //Assert.That(item.ToString() == "[6]");
             Assert.That(item.ToString(), Is.EqualTo("6"));
+        }
+        [Test]
+        public void Test_Collection_GetByInvalidIndex()
+        {
+            var coll = new Collection<int>( 5, 6, 7);
+
+            Assert.That(() => { var item = coll[5]; },
+                      Throws.InstanceOf<ArgumentOutOfRangeException>());
         }
 
         [Test]
@@ -146,6 +167,48 @@ namespace CollectionUnitTest
 
             Assert.That(coll.Capacity, Is.EqualTo(36));
             //Assert.That(coll.ToString(), Is.EqualTo("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]"));
+        }
+
+        [Test]
+        public void Test_Collection_InsertItemAtStart()
+        {
+            //Arrange and Act
+            var nums = new Collection<int>(2, 3, 4, 5, 6);
+
+            //Act
+            nums.InsertAt(0, 1);
+
+            //Assert
+            Assert.That(nums.ToString(), Is.EqualTo("[1, 2, 3, 4, 5, 6]"));
+
+        }
+
+        [Test]
+        public void Test_Collection_InsertItemAtEnd()
+        {
+            //Arrange and Act
+            var nums = new Collection<int>(1, 2, 3, 4, 5);
+
+            //Act
+            nums.InsertAt(5, 6);
+
+            //Assert
+            Assert.That(nums.ToString(), Is.EqualTo("[1, 2, 3, 4, 5, 6]"));
+
+        }
+
+        [Test]
+        public void Test_Collection_InsertItemAtMiddle()
+        {
+            //Arrange and Act
+            var nums = new Collection<int>(1, 2, 4, 5, 6);
+
+            //Act
+            nums.InsertAt(2, 3);
+
+            //Assert
+            Assert.That(nums.ToString(), Is.EqualTo("[1, 2, 3, 4, 5, 6]"));
+
         }
     }
 }
