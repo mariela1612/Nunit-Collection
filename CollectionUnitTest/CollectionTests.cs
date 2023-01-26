@@ -1,6 +1,5 @@
 
 using Collections;
-using NUnit.Framework.Constraints;
 
 namespace CollectionUnitTest
 {
@@ -121,7 +120,7 @@ namespace CollectionUnitTest
             Assert.That(item.ToString(), Is.EqualTo("6"));
         }
         [Test]
-        public void Test_Collection_GetByInvalidIndex()
+        public void Test_Collection_GetByInvalidIndex1()
         {
             var coll = new Collection<int>( 5, 6, 7);
 
@@ -209,6 +208,49 @@ namespace CollectionUnitTest
             //Assert
             Assert.That(nums.ToString(), Is.EqualTo("[1, 2, 3, 4, 5, 6]"));
 
+        }
+
+        [Test]
+        public void Test_Collection_GetByInvalidIndex2()
+        {
+            var names = new Collection<string>("Mimi", "Isi");
+            Assert.That(() => { var name = names[-10]; },
+
+              Throws.InstanceOf<ArgumentOutOfRangeException>());
+            Assert.That(() => { var name = names[15]; },
+
+              Throws.InstanceOf<ArgumentOutOfRangeException>());
+            Assert.That(() => { var name = names[500]; },
+              Throws.InstanceOf<ArgumentOutOfRangeException>());
+            Assert.That(names.ToString(), Is.EqualTo("[Mimi, Isi]"));
+        }
+
+        [Test]
+        public void Test_Collection_ToStringNestedCollections()
+        {
+            var names = new Collection <string> ("QA", "DEV");
+            var nums = new Collection <int> (17, 20);
+            var nested = new Collection<object>(names, nums);
+
+            string nestedToString = nested.ToString();
+            Assert.That(nestedToString,
+              Is.EqualTo("[[QA, DEV], [17, 20]]"));
+        }
+
+        [Test]
+        [Timeout(1000)]
+        public void Test_Collection_1MillionItems()
+        {
+            const int numsCount = 1000000;
+            var nums = new Collection<int>();
+
+            nums.AddRange(Enumerable.Range(1, numsCount).ToArray());
+            Assert.That(nums.Count == numsCount);
+            Assert.That(nums.Capacity >= nums.Count);
+            for (int i = numsCount - 1; i >= 0; i--)
+                nums.RemoveAt(i);
+            Assert.That(nums.ToString() == "[]");
+            Assert.That(nums.Capacity >= nums.Count);
         }
     }
 }
